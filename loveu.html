@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfect Center Heart</title>
+    <style>
+        body {
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .heart-container {
+            position: relative;
+            /* Container ရဲ့ width/height ကို လုံးဝ 0 ထားလိုက်ခြင်းက ဗဟိုချက်ကို ပိုတိကျစေပါတယ် */
+            width: 0;
+            height: 0;
+        }
+
+        .text {
+            position: absolute;
+            color: #ff69b4;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 14px;
+            white-space: nowrap;
+            text-shadow: 0 0 10px #ff69b4;
+            /* transform translate က ဗဟိုကို ညှိပေးတာပါ */
+            transform: translate(-50%, -50%);
+            animation: floatText 3s infinite ease-in-out;
+        }
+
+        @keyframes floatText {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            50% { transform: translate(-50%, -60%) scale(1.1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="myAudio" loop>
+        <source src="love you love youangel lyrics angel loveyou lyric.mp3" type="audio/mp4">
+    </audio>
+
+    <div class="heart-container" id="heart"></div>
+
+    <script>
+        const heartContainer = document.getElementById('heart');
+        const totalTexts = 60;
+
+        // ဖုန်း screen အရွယ်အစားပေါ်မူတည်ပြီး နှလုံးသားအရွယ်အစားကို ညှိခြင်း
+        const screenWidth = window.innerWidth;
+        const scaleBase = screenWidth < 500 ? 10 : 15; // ဖုန်းဆိုရင် ၁၀၊ ကွန်ပျူတာဆိုရင် ၁၅
+
+        for (let i = 0; i < totalTexts; i++) {
+            const textElement = document.createElement('div');
+            textElement.className = 'text';
+            textElement.innerText = 'I love you';
+
+            const t = (i / totalTexts) * 2 * Math.PI;
+            const x = 16 * Math.pow(Math.sin(t), 3);
+            const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
+
+            // Container ရဲ့ အလယ်တည့်တည့် (0,0) ကနေ စတွက်ပါတယ်
+            textElement.style.left = `${x * scaleBase}px`;
+            textElement.style.top = `${y * scaleBase}px`;
+            textElement.style.animationDelay = `${Math.random() * 3}s`;
+
+            heartContainer.appendChild(textElement);
+        }
+
+        window.onclick = function() {
+            document.getElementById('myAudio').play();
+        }
+    </script>
+</body>
+</html>
